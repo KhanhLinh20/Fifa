@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lịch thi đấu</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+    integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./font/fontawesome-free-6.4.0-web/fontawesome-free-6.4.0-web/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/grid.css" />
+  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./css/responsive.css" />
+
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+</head>
+<style>
+  .left__content-heading {
+    font-size: 1.6rem;
+    color: var(--white-color);
+    text-align: center;
+    margin: 0;
+    padding: 6px 16px;
+  }
+
+  .left__content-list {
+    background-color: var(--black-color);
+    list-style: none;
+    padding: 0;
+    margin: 4px 10px;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.9);
+  }
+
+  .left__content-item-active .left__content-link {
+    color: var(--white-color);
+  }
+
+  .left__content-link {
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: grey;
+    display: block;
+    padding: 10px 16px;
+    text-align: center;
+  }
+
+  .left__content-link-icon {
+    color: var(--white-color);
+  }
+
+  .mid__content-header {
+    text-align: center;
+  }
+
+  .mid__content-header-heading {
+    font-size: 2rem;
+    color: var(--white-color);
+    margin: 0;
+    padding: 6px 16px 22px 6px;
+    display: inline-block;
+  }
+
+  .mid__content-header-live {
+    display: inline-block;
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--white-color);
+    padding: 2px 10px;
+    border: 2px solid red;
+    border-radius: 50px;
+    background-color: red;
+  }
+
+  .mid__content-list {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    border-bottom: 2px solid rgba(66, 66, 66, 0.5);
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .mid__content-list::-webkit-scrollbar {
+    display: none;
+    /* tạo lớp giả ẩn thanh scroll bar */
+  }
+
+  .hide-on-pc {
+    display: none;
+  }
+
+  .mid__content-item {
+    flex-shrink: 0;
+  }
+
+  .mid__content-item--active .mid__content-link {
+    color: var(--white-color);
+    border-bottom: 2px solid var(--white-color);
+  }
+
+  .mid__content-link {
+    font-size: 1.6rem;
+    color: grey;
+    text-decoration: none;
+    display: block;
+    padding-bottom: 5px;
+    text-align: center;
+  }
+
+  .mid__content-result {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    margin: 12px;
+    padding: 12px;
+  }
+
+  .mid__content-result:nth-child(2n+1) {
+    background-color: var(--black-color);
+    border-radius: 12px;
+  }
+
+  .mid__content-match {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    text-align: center;
+  }
+
+  .mid__content-match-compete {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    text-align: center;
+  }
+
+  .mid__content-match-team {
+    font-size: 1.2rem;
+    color: var(--white-color);
+    line-height: 3.2rem;
+  }
+
+  .mid__content-match-flag {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+
+  .mid__content-match-score {
+    font-size: 1.2rem;
+    color: var(--white-color);
+    line-height: 3.2rem;
+  }
+
+  .mid__content-info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-auto-flow: column;
+  }
+
+  .mid__content-info-timeline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .mid__content-info-time-text {
+    font-size: 1.2rem;
+    line-height: 3.2rem;
+    color: var(--red-color);
+    margin: 0 12px;
+    border-radius: 1rem;
+    background: rgba(50, 51, 55, 0.9);
+    width: 10rem;
+    height: 3.3rem;
+    text-align: center;
+  }
+
+  .mid__content-info-date {
+    padding: 0 2rem;
+  }
+
+  .mid__content-info-date,
+  .mid__content-info-icon {
+    font-size: 1.2rem;
+    line-height: 3.2rem;
+    color: var(--white-color);
+  }
+
+  .mid__content-info-fulltime {
+    color: var(--white-color);
+  }
+
+  .mid__content--scroll {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .left__content-name {
+    font-size: 1.2rem;
+    text-align: center;
+    color: var(--white-color);
+    padding-top: 10px;
+    margin: 4px 10px;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.9);
+  }
+
+  .left__content-info {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    margin: 12px 0;
+  }
+
+  .left__content-info-timeline {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .left__content-info-flag {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+
+  .left__content-scroll {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .mobile-category {
+    display: none;
+    margin-bottom: 24px;
+  }
+
+  .mobile-category__list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    list-style: none;
+    padding-left: 0;
+    max-width: 100%;
+  }
+
+  .mobile-category__item {
+    margin-right: 10px;
+  }
+
+  .mobile-category__item:last-child {
+    margin: 0;
+  }
+
+  .mobile-category__link {
+    text-decoration: none;
+    color: var(--black-color);
+    background-color: rgba(255, 255, 255, 0.5);
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-align: center;
+    width: 110px;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .mobile-category__link--active {
+    background-color: var(--white-color);
+  }
+
+  .mid__content-info-length-time {
+    font-size: 1.2rem;
+    line-height: 3.2rem;
+    color: var(--white-color);
+    margin: 0 12px 0 12px;
+    border-radius: 1rem;
+    background: rgba(50, 51, 55, 0.9);
+    width: 10rem;
+    height: 3.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .mid__content-chart {
+    /* display: flex;
+    justify-content: space-between;
+    margin: 12px 26px 0 0; */
+    display: grid;
+    grid-template-columns: 30px 100px 100px;
+  }
+
+  .mid__content-chart-club {
+    font-size: 1.2rem;
+    color: var(--white-color);
+  }
+
+  .mid__content-chart-list {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+
+  .mid__content-chart-item {
+    font-size: 1.2rem;
+    color: var(--white-color);
+    /* margin: 0 16px; */
+  }
+
+  .mid__content-chart-item-score {
+    font-size: 1.2rem;
+    color: var(--white-color);
+    /* margin: 0 20px; */
+  }
+
+  .table__scroll {
+    height: 200px;
+    overflow: auto;
+  }
+
+  .table__content-heading,
+  .table__content-container {
+    display: grid;
+    grid-template-columns: 8fr auto auto auto auto;
+    gap: 50px;
+    margin: 0 24px;
+  }
+
+  .table__content-heading-club {
+    font-size: 1.6rem;
+    color: var(--white-color);
+    line-height: 3.2rem;
+  }
+
+  .table__content-container {
+    background-color: rgba(73, 64, 105, 0.4);
+    padding: 12px;
+    margin: 12px;
+    border-radius: 12px;
+  }
+
+  .table__content-club {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    max-width: 295px;
+  }
+
+  .table__content-club-number,
+  .table__content-club-name,
+  .table__content-result {
+    color: var(--white-color);
+    font-size: 1.6rem;
+    line-height: 3.2rem;
+  }
+
+  .table__content-result {}
+
+  .table__content-club-flag {
+    width: 32px;
+    height: 32px;
+  }
+
+  .mid__content-news {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  @media screen and (max-width: 1023px) {
+    .mobile-category {
+      display: block;
+    }
+
+    .left__content-scroll {
+      overflow-y: hidden;
+    }
+
+    .mid__content-header-heading {
+      font-size: 1.5rem;
+    }
+
+    .mid__content-item {
+      margin: 0 12px;
+    }
+
+    .mid__content-link {
+      font-size: 1.2rem;
+    }
+
+    .mid__content-match {
+      align-items: center;
+    }
+
+    .mid__content-match-team,
+    .mid__content-match-score {
+      line-height: 1.5rem;
+    }
+
+    .mid__content-match-flag {
+      width: 15px;
+      height: 15px;
+    }
+
+    .mid__content-info {
+      grid-template-columns: auto 1fr;
+      /* Ở chế độ responsive, chỉ có một cột */
+      grid-template-areas:
+        "icon timeline";
+      /* Đảo thứ tự các khối */
+      text-align: center;
+    }
+
+    .mid__content-info-timeline {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
+      grid-area: timeline;
+      row-gap: 0;
+    }
+
+    .mid__content-info-time {
+      display: flex;
+      align-items: center;
+      /* Để căn giữa theo chiều dọc */
+      justify-content: center;
+      /* Để căn giữa theo chiều ngang */
+    }
+
+    .mid__content-info-time-text {
+      width: 43px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mid__content-info-fulltime {
+      font-size: 0.6rem;
+    }
+
+    .mid__content-info-date {
+      margin-top: -5px;
+    }
+
+    .mid__content-info-icon {
+      grid-area: icon;
+      display: flex;
+      /* Sử dụng flexbox để căn giữa dọc */
+      flex-direction: column;
+      /* Xếp chồng văn bản theo cột */
+      align-items: center;
+      /* Để căn giữa theo chiều ngang */
+      justify-content: center;
+      /* Để căn giữa theo chiều dọc */
+      text-align: center;
+      /* Để căn giữa theo chiều ngang trong từng dòng */
+      height: 100%;
+      /* Đảm bảo khối icon có chiều cao 100% của div cha */
+    }
+
+    .mid__content-info-icon i {
+      line-height: 1.5rem;
+      /* Điều chỉnh line-height để văn bản nằm chính giữa của dòng thứ hai */
+    }
+
+    .mid__content-news {
+      flex-wrap: nowrap;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    .mid__content-news::-webkit-scrollbar {
+      display: none;
+      /* tạo lớp giả ẩn thanh scroll bar */
+    }
+
+    .news-item__banner {
+      width: 164px;
+      height: 159px;
+    }
+
+    .hide-on-pc {
+      display: grid;
+      grid-template-columns: repeat(5, auto);
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+      border-bottom: 2px solid rgba(66, 66, 66, 0.5);
+      max-width: 100%;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+  }
+</style>
+
+<body>
+  <div class="web">
+
+    <!-- MENU -->
+    <header class="header">
+      <div id="toggle">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+      <div class="box__navbar">
+        <nav class="header__navbar">
+          <ul class="header__navbar-list-left">
+            <li class="header__navbar-item">
+              <img src="./img/Fifa logo.png" alt="" class="header__navbar-img" />
+            </li>
+          </ul>
+          <ul class="header__navbar-list">
+            <li class="header__navbar-list">
+              <a href="" class="header__navbar-link">TRANG CHỦ</a>
+            </li>
+            <li class="header__navbar-list">
+              <a href="" class="header__navbar-link">NHẬN ĐỊNH TỶ LỆ</a>
+            </li>
+            <li class="header__navbar-list">
+              <a href="" class="header__navbar-link">TIN TỨC</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="app__container">
+      <div class="grid wide">
+        <!-- LINE 1 -->
+        <div class="row sm-gutter app__content">
+
+          <!-- CÁC GIẢI ĐẤU -->
+          <div class="col l-3 m-0 c-0">
+            <div class="left__content">
+              <h4 class="left__content-heading">Các giải đấu</h4>
+              <ul class="left__content-list">
+                <li class="left__content-item left__content-item-active">
+                  <a href="" class="left__content-link">Premier League</a>
+                </li>
+                <li class="left__content-item">
+                  <a href="" class="left__content-link">World Cup</a>
+                </li>
+                <li class="left__content-item">
+                  <a href="" class="left__content-link">La Liga</a>
+                </li>
+                <li class="left__content-item">
+                  <a href="" class="left__content-link">Ligue 1</a>
+                </li>
+                <li class="left__content-item">
+                  <a href="" class="left__content-link">V-League</a>
+                </li>
+                <li class="left__content-item">
+                  <a href="" class="left__content-link">Bundesliga</a>
+                </li>
+                <li class="left__content-item">
+                  <a href="" class="left__content-link">Champions League</a>
+                </li>
+                <li class="left__content-item">
+                  <a href="" class="left__content-link">National League North</a>
+                </li>
+                <li class="left__content-item">
+                  <a href="" class="left__content-link">Copa America</a>
+                </li>
+                <li class="left__content-item left__content-item-active">
+                  <a href="" class="left__content-link">
+                    Xem thêm (5)
+                    <i class="fa-solid fa-angle-down left__content-link-icon"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- CÁC TRẬN ĐẤU ĐANG DIỄN RA -->
+          <div class="col l-7 m-0 c-0">
+
+
+            <div class="mid__content">
+
+              <div class="mid__content-header">
+                <h4 class="mid__content-header-heading">Các trận đấu đang diễn ra</h4>
+                <p class="mid__content-header-live">Live</p>
+              </div>
+
+              <ul class="mid__content-list">
+                <li class="mid__content-item mid__content-item--active">
+                  <a href="" class="mid__content-link">World Cup</a>
+                </li>
+                <li class="mid__content-item">
+                  <a href="" class="mid__content-link">La Liga</a>
+                </li>
+                <li class="mid__content-item">
+                  <a href="" class="mid__content-link">Premier League</a>
+                </li>
+                <li class="mid__content-item">
+                  <a href="" class="mid__content-link">Champions League</a>
+                </li>
+                <li class="mid__content-item">
+                  <a href="" class="mid__content-link">Ligue 1</a>
+                </li>
+              </ul>
+
+              <div class="mid__content--scroll">
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text">62'</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text">62'</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text">62'</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text">62'</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text">62'</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text">62'</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text">62'</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- QUẢNG CÁO -->
+          <div class="col l-2 m-0 c-0 ads">
+            <p class="ads__title">Quảng cáo</p>
+            <img src="./img/ads banner.jpg" alt="" class="ads__banner" />
+            <img src="./img/ads banner.jpg" alt="" class="ads__banner" />
+          </div>
+        </div>
+
+        <!-- LINE 2 -->
+        <div class="row sm-gutter app__content">
+
+          <!-- LỊCH THI ĐẤU -->
+          <div class="col l-3 m-12 c-12">
+            <!-- MOBILE CATEGORY -->
+            <nav class="mobile-category">
+              <ul class="mobile-category__list">
+                <li class="mobile-category__item">
+                  <a href="" class="mobile-category__link">Các trận
+                    đấu</a>
+                </li>
+                <li class="mobile-category__item">
+                  <a href="" class="mobile-category__link mobile-category__link--active">Lịch thi đấu</a>
+                </li>
+                <li class="mobile-category__item">
+                  <a href="" class="mobile-category__link">Bảng xếp hạng</a>
+                </li>
+              </ul>
+            </nav>
+            <ul class="mid__content-list hide-on-pc">
+              <li class="mid__content-item mid__content-item--active">
+                <a href="" class="mid__content-link">World Cup</a>
+              </li>
+              <li class="mid__content-item">
+                <a href="" class="mid__content-link">La Liga</a>
+              </li>
+              <li class="mid__content-item">
+                <a href="" class="mid__content-link">Premier League</a>
+              </li>
+              <li class="mid__content-item">
+                <a href="" class="mid__content-link">Champions League</a>
+              </li>
+              <li class="mid__content-item">
+                <a href="" class="mid__content-link">Ligue 1</a>
+              </li>
+            </ul>
+            <div class="left__content">
+              <h4 class="left__content-heading">Lịch thi đấu</h4>
+              <div class="left__content-name">
+                Champions League
+                <i class="fa-solid fa-angle-down left__content-link-icon"></i>
+
+                <div class="left__content-scroll">
+                  <div class="left__content-info">
+                    <div class="left__content-info-img">
+                      <img src="./img/manchester_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                    <div class="left__content-info-timeline">
+                      <div class="left__content-info-date">12/12/2020</div>
+                      <div class="left__content-info-time">00:00</div>
+                    </div>
+                    <div class="left__content-info-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                  </div>
+                  <div class="left__content-info">
+                    <div class="left__content-info-img">
+                      <img src="./img/manchester_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                    <div class="left__content-info-timeline">
+                      <div class="left__content-info-date">12/12/2020</div>
+                      <div class="left__content-info-time">00:00</div>
+                    </div>
+                    <div class="left__content-info-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                  </div>
+                  <div class="left__content-info">
+                    <div class="left__content-info-img">
+                      <img src="./img/manchester_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                    <div class="left__content-info-timeline">
+                      <div class="left__content-info-date">12/12/2020</div>
+                      <div class="left__content-info-time">00:00</div>
+                    </div>
+                    <div class="left__content-info-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                  </div>
+                  <div class="left__content-info">
+                    <div class="left__content-info-img">
+                      <img src="./img/manchester_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                    <div class="left__content-info-timeline">
+                      <div class="left__content-info-date">12/12/2020</div>
+                      <div class="left__content-info-time">00:00</div>
+                    </div>
+                    <div class="left__content-info-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                  </div>
+                  <div class="left__content-info">
+                    <div class="left__content-info-img">
+                      <img src="./img/manchester_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                    <div class="left__content-info-timeline">
+                      <div class="left__content-info-date">12/12/2020</div>
+                      <div class="left__content-info-time">00:00</div>
+                    </div>
+                    <div class="left__content-info-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                  </div>
+                  <div class="left__content-info">
+                    <div class="left__content-info-img">
+                      <img src="./img/manchester_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                    <div class="left__content-info-timeline">
+                      <div class="left__content-info-date">12/12/2020</div>
+                      <div class="left__content-info-time">00:00</div>
+                    </div>
+                    <div class="left__content-info-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                  </div>
+                  <div class="left__content-info">
+                    <div class="left__content-info-img">
+                      <img src="./img/manchester_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                    <div class="left__content-info-timeline">
+                      <div class="left__content-info-date">12/12/2020</div>
+                      <div class="left__content-info-time">00:00</div>
+                    </div>
+                    <div class="left__content-info-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="left__content-info-flag">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CÁC TRẬN ĐẤU ĐÃ DIỄN RA -->
+          <div class="col l-7 m-0 c-0">
+            <div class="mid__content">
+
+              <div class="mid__content-header">
+                <h4 class="mid__content-header-heading">Các trận đấu đã diễn ra</h4>
+              </div>
+
+              <ul class="mid__content-list">
+                <li class="mid__content-item mid__content-item--active">
+                  <a href="" class="mid__content-link">World Cup</a>
+                </li>
+                <li class="mid__content-item">
+                  <a href="" class="mid__content-link">La Liga</a>
+                </li>
+                <li class="mid__content-item">
+                  <a href="" class="mid__content-link">Premier League</a>
+                </li>
+                <li class="mid__content-item">
+                  <a href="" class="mid__content-link">Champions League</a>
+                </li>
+                <li class="mid__content-item">
+                  <a href="" class="mid__content-link">Ligue 1</a>
+                </li>
+              </ul>
+
+              <div class="mid__content--scroll">
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text mid__content-info-fulltime">Full - Time</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text mid__content-info-fulltime">Full - Time</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text mid__content-info-fulltime">Full - Time</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text mid__content-info-fulltime">Full - Time</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text mid__content-info-fulltime">Full - Time</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text mid__content-info-fulltime">Full - Time</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mid__content-result">
+                  <div class="mid__content-match">
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-team">Argentina</div>
+                      <div class="mid__content-match-img">
+                        <img src="./img/argentina_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                    </div>
+                    <div class="mid__content-match-score">1 - 2</div>
+                    <div class="mid__content-match-compete">
+                      <div class="mid__content-match-img">
+                        <img src="./img/italy_flag.png" alt="" class="mid__content-match-flag">
+                      </div>
+                      <div class="mid__content-match-team">Italy</div>
+                    </div>
+                  </div>
+
+                  <div class="mid__content-info">
+                    <div class="mid__content-info-timeline">
+                      <div class="mid__content-info-time">
+                        <div class="mid__content-info-time-text mid__content-info-fulltime">Full - Time</div>
+                      </div>
+                      <div class="mid__content-info-date">18/12/2023</div>
+                    </div>
+                    <div class="mid__content-info-icon">
+                      <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- QUẢNG CÁO -->
+          <div class="col l-2 m-0 c-0 ads">
+            <img src="./img/ads banner.jpg" alt="" class="ads__banner" />
+            <img src="./img/ads banner.jpg" alt="" class="ads__banner" />
+          </div>
+        </div>
+
+        <!-- LINE 3 -->
+        <div class="row sm-gutter app__content">
+          <div class="col l-3 m-0 c-0"></div>
+
+          <!-- BẢNG XẾP HẠNG -->
+          <div class="col l-7 m-0 c-0">
+            <div class="mid__content">
+
+              <div class="mid__content-header">
+                <h4 class="mid__content-header-heading">Bảng xếp hạng</h4>
+              </div>
+
+              <ul class="mid__content-list">
+                <li class="mid__content-item mid__content-item--active">
+                  <a href="" class="mid__content-link">World Cup</a>
+                </li>
+                <li class="mid__content-item">
+                  <a href="" class="mid__content-link">La Liga</a>
+                </li>
+                <li class="mid__content-item">
+                  <a href="" class="mid__content-link">Premier League</a>
+                </li>
+                <li class="mid__content-item">
+                  <a href="" class="mid__content-link">Champions League</a>
+                </li>
+                <li class="mid__content-item">
+                  <a href="" class="mid__content-link">Ligue 1</a>
+                </li>
+              </ul>
+
+              <div class="table__content-heading">
+                <div class="table__content-heading-club">Club</div>
+                <div class="table__content-result">W</div>
+                <div class="table__content-result">D</div>
+                <div class="table__content-result">L</div>
+                <div class="table__content-result">Point</div>
+              </div>
+              <div class="table__scroll">
+                <div class="table__content-container">
+                  <div class="table__content-club">
+                    <div class="table__content-club-number">1</div>
+                    <div class="table__content-club-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="table__content-club-flag">
+                    </div>
+                    <div class="table__content-club-name">Chelsea F.C</div>
+                  </div>
+                  <div class="table__content-result">14</div>
+                  <div class="table__content-result">3</div>
+                  <div class="table__content-result">1</div>
+                  <div class="table__content-result">35</div>
+                </div>
+                <div class="table__content-container">
+                  <div class="table__content-club">
+                    <div class="table__content-club-number">1</div>
+                    <div class="table__content-club-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="table__content-club-flag">
+                    </div>
+                    <div class="table__content-club-name">Chelsea F.C</div>
+                  </div>
+                  <div class="table__content-result">14</div>
+                  <div class="table__content-result">3</div>
+                  <div class="table__content-result">1</div>
+                  <div class="table__content-result">35</div>
+                </div>
+                <div class="table__content-container">
+                  <div class="table__content-club">
+                    <div class="table__content-club-number">1</div>
+                    <div class="table__content-club-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="table__content-club-flag">
+                    </div>
+                    <div class="table__content-club-name">Chelsea F.C</div>
+                  </div>
+                  <div class="table__content-result">14</div>
+                  <div class="table__content-result">3</div>
+                  <div class="table__content-result">1</div>
+                  <div class="table__content-result">35</div>
+                </div>
+                <div class="table__content-container">
+                  <div class="table__content-club">
+                    <div class="table__content-club-number">1</div>
+                    <div class="table__content-club-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="table__content-club-flag">
+                    </div>
+                    <div class="table__content-club-name">Chelsea F.C</div>
+                  </div>
+                  <div class="table__content-result">14</div>
+                  <div class="table__content-result">3</div>
+                  <div class="table__content-result">1</div>
+                  <div class="table__content-result">35</div>
+                </div>
+                <div class="table__content-container">
+                  <div class="table__content-club">
+                    <div class="table__content-club-number">1</div>
+                    <div class="table__content-club-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="table__content-club-flag">
+                    </div>
+                    <div class="table__content-club-name">Chelsea F.C</div>
+                  </div>
+                  <div class="table__content-result">14</div>
+                  <div class="table__content-result">3</div>
+                  <div class="table__content-result">1</div>
+                  <div class="table__content-result">35</div>
+                </div>
+                <div class="table__content-container">
+                  <div class="table__content-club">
+                    <div class="table__content-club-number">1</div>
+                    <div class="table__content-club-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="table__content-club-flag">
+                    </div>
+                    <div class="table__content-club-name">Chelsea F.C</div>
+                  </div>
+                  <div class="table__content-result">14</div>
+                  <div class="table__content-result">3</div>
+                  <div class="table__content-result">1</div>
+                  <div class="table__content-result">35</div>
+                </div>
+                <div class="table__content-container">
+                  <div class="table__content-club">
+                    <div class="table__content-club-number">1</div>
+                    <div class="table__content-club-img">
+                      <img src="./img/chelsea_flag.png" alt="" class="table__content-club-flag">
+                    </div>
+                    <div class="table__content-club-name">Chelsea F.C</div>
+                  </div>
+                  <div class="table__content-result">14</div>
+                  <div class="table__content-result">3</div>
+                  <div class="table__content-result">1</div>
+                  <div class="table__content-result">35</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUẢNG CÁO -->
+          <div class="col l-2 m-0 c-0 ads">
+            <img src="./img/ads banner.jpg" alt="" class="ads__banner" />
+            <img src="./img/ads banner.jpg" alt="" class="ads__banner" />
+          </div>
+        </div>
+
+        <!-- LINE 4 -->
+        <div class="row sm-gutter app__content">
+          <div class="col l-3 m-0 c-0"></div>
+          <div class="col l-7 m-0 c-0">
+            <div class="mid__content">
+              <div class="mid__content-header">
+                <h4 class="mid__content-header-heading">Tin tức</h4>
+              </div>
+              <div class="mid__content-news">
+                <div class="col l-4">
+                  <img src="./img/news banner.jpg" alt="" class="news-item__banner" />
+                  <h4 class="news-item__name">
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Ipsum sapiente autem perspiciatis doloribus nemo impedit
+                    iure dolorem quae fuga nihil saepe, incidunt ratione!
+                    Architecto veritatis aperiam deleniti eligendi temporibus
+                    quaerat!
+                  </h4>
+                  <span class="news-item__desc">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Incidunt culpa fugit in dolor quis saepe autem iusto
+                    dignissimos! Fuga molestiae doloremque reiciendis
+                    distinctio facilis blanditiis nam maxime eaque doloribus
+                    voluptatibus.</span>
+                </div>
+                <div class="col l-4">
+                  <img src="./img/news banner.jpg" alt="" class="news-item__banner" />
+                  <h4 class="news-item__name">
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Ipsum sapiente autem perspiciatis doloribus nemo impedit
+                    iure dolorem quae fuga nihil saepe, incidunt ratione!
+                    Architecto veritatis aperiam deleniti eligendi temporibus
+                    quaerat!
+                  </h4>
+                  <span class="news-item__desc">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Incidunt culpa fugit in dolor quis saepe autem iusto
+                    dignissimos! Fuga molestiae doloremque reiciendis
+                    distinctio facilis blanditiis nam maxime eaque doloribus
+                    voluptatibus.</span>
+                </div>
+                <div class="col l-4">
+                  <img src="./img/news banner.jpg" alt="" class="news-item__banner" />
+                  <h4 class="news-item__name">
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Ipsum sapiente autem perspiciatis doloribus nemo impedit
+                    iure dolorem quae fuga nihil saepe, incidunt ratione!
+                    Architecto veritatis aperiam deleniti eligendi temporibus
+                    quaerat!
+                  </h4>
+                  <span class="news-item__desc">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Incidunt culpa fugit in dolor quis saepe autem iusto
+                    dignissimos! Fuga molestiae doloremque reiciendis
+                    distinctio facilis blanditiis nam maxime eaque doloribus
+                    voluptatibus.</span>
+                </div>
+                <div class="col l-4">
+                  <img src="./img/news banner.jpg" alt="" class="news-item__banner" />
+                  <h4 class="news-item__name">
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Ipsum sapiente autem perspiciatis doloribus nemo impedit
+                    iure dolorem quae fuga nihil saepe, incidunt ratione!
+                    Architecto veritatis aperiam deleniti eligendi temporibus
+                    quaerat!
+                  </h4>
+                  <span class="news-item__desc">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Incidunt culpa fugit in dolor quis saepe autem iusto
+                    dignissimos! Fuga molestiae doloremque reiciendis
+                    distinctio facilis blanditiis nam maxime eaque doloribus
+                    voluptatibus.</span>
+                </div>
+                <div class="col l-4">
+                  <img src="./img/news banner.jpg" alt="" class="news-item__banner" />
+                  <h4 class="news-item__name">
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Ipsum sapiente autem perspiciatis doloribus nemo impedit
+                    iure dolorem quae fuga nihil saepe, incidunt ratione!
+                    Architecto veritatis aperiam deleniti eligendi temporibus
+                    quaerat!
+                  </h4>
+                  <span class="news-item__desc">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Incidunt culpa fugit in dolor quis saepe autem iusto
+                    dignissimos! Fuga molestiae doloremque reiciendis
+                    distinctio facilis blanditiis nam maxime eaque doloribus
+                    voluptatibus.</span>
+                </div>
+                <div class="col l-4">
+                  <img src="./img/news banner.jpg" alt="" class="news-item__banner" />
+                  <h4 class="news-item__name">
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                    Ipsum sapiente autem perspiciatis doloribus nemo impedit
+                    iure dolorem quae fuga nihil saepe, incidunt ratione!
+                    Architecto veritatis aperiam deleniti eligendi temporibus
+                    quaerat!
+                  </h4>
+                  <span class="news-item__desc">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Incidunt culpa fugit in dolor quis saepe autem iusto
+                    dignissimos! Fuga molestiae doloremque reiciendis
+                    distinctio facilis blanditiis nam maxime eaque doloribus
+                    voluptatibus.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUẢNG CÁO -->
+          <div class="col l-2 m-0 c-0 ads">
+            <img src="./img/ads banner.jpg" alt="" class="ads__banner" />
+            <img src="./img/ads banner.jpg" alt="" class="ads__banner" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="grid wide">
+        <div class="row footer__content">
+          <div class="col l-3 m-12 c-12">
+            <ul class="footer-list">
+              <li class="footer-item">
+                <a href="" class="footer-item__link">Điều khoản sử dụng</a>
+              </li>
+              <li class="footer-item">
+                <a href="" class="footer-item__link">Thông báo pháp lý</a>
+              </li>
+              <li class="footer-item">
+                <a href="" class="footer-item__link">Quyền riêng tư</a>
+              </li>
+              <li class="footer-item">
+                <a href="" class="footer-item__link">© 1997-2023 ABC, Inc.</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col l-3 m-12 c-12">
+            <ul class="footer-list">
+              <li class="footer-item">
+                <a href="" class="footer-item__link">Trang chủ</a>
+              </li>
+              <li class="footer-item">
+                <a href="" class="footer-item__link">Nhận định tỷ lệ</a>
+              </li>
+              <li class="footer-item">
+                <a href="" class="footer-item__link">Tin tức</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col l-3 m-12 c-12">
+            <ul class="footer-list">
+              <li class="footer-item">
+                <a href="" class="footer-item__link">Liên hệ đặt quảng cáo</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col l-3 m-12 c-12">
+            <ul class="footer-list">
+              <li class="footer-item">
+                <a href="" class="footer-item__link">
+                  <i class="footer-item__icon fa-brands fa-facebook"></i>
+                  Facebook
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>
+      $(document).ready(function () {
+        $("#toggle").click(function () {
+          if (window.innerWidth < 1024) {
+            $(".box__navbar").toggleClass("active");
+          }
+        });
+      });
+    </script>
+  </div>
+</body>
+
+</html>

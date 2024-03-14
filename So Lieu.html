@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>So Lieu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+        integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./font/fontawesome-free-6.4.0-web/fontawesome-free-6.4.0-web/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/base.css" />
+    <link rel="stylesheet" href="./css/grid.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/responsive.css" />
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+</head>
+
+<style>
+    .mid__content-grid {
+        margin-top: 12px;
+        background-color: #1B1C21;
+        border-radius: 12px;
+        padding: 10px 0 48px 0;
+    }
+
+    .subpage__match-video {
+        position: relative;
+        overflow: hidden;
+        height: 0;
+        padding-bottom: 56.2%;
+        max-width: 100%;
+        width: auto;
+        margin: 20px;
+    }
+
+    .subpage__match-video>iframe {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    .subpage__index {
+        font-size: 2rem;
+        font-weight: 500;
+        color: var(--white-color);
+    }
+
+    .mobile-category {
+        display: none;
+        margin-bottom: 24px;
+    }
+
+    .mobile-category__list {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 24px;
+        list-style: none;
+        padding-left: 0;
+        max-width: 100%;
+    }
+
+    .mobile-category__item {
+        margin-right: 10px;
+    }
+
+    .mobile-category__item:last-child {
+        margin: 0;
+    }
+
+    .mobile-category__link {
+        text-decoration: none;
+        color: var(--black-color);
+        background-color: rgba(255, 255, 255, 0.5);
+        font-size: 1.2rem;
+        font-weight: 500;
+        text-align: center;
+        width: 110px;
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    .mobile-category__link--active {
+        background-color: var(--white-color);
+    }
+
+    .subpage__grid-container {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        grid-template-rows: auto auto;
+        color: var(--white-color);
+        font-size: 1.2rem;
+    }
+
+    .grid-item {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .empty {
+        background-color: transparent;
+        border: none;
+    }
+
+    .content {
+        font-size: 1.6rem;
+    }
+
+
+    .subpage__match {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+
+    .subpage__match-item {
+        line-height: 4rem;
+        color: var(--white-color);
+        font-size: 2.2rem;
+    }
+
+    .subpage__match-pic {
+        text-align: center;
+    }
+
+    .subpage__match-img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    .subpage__match-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .subpage__match-info-name {
+        font-size: 1.4rem;
+        color: grey;
+    }
+
+    .mid__content-list {
+        display: flex;
+        justify-content: space-evenly;
+        list-style: none;
+        padding-left: 0;
+        margin: 24px 120px;
+        border-bottom: 2px solid rgba(66, 66, 66, 0.5);
+    }
+
+    .mid__content-item {}
+
+    .mid__content-item--active .mid__content-link {
+        color: var(--white-color);
+        border-bottom: 2px solid var(--white-color);
+    }
+
+    .mid__content-link {
+        font-size: 1.6rem;
+        color: grey;
+        text-decoration: none;
+        display: block;
+        padding-bottom: 5px;
+        text-align: center;
+    }
+
+    .mid__content-data {
+        margin: 24px 48px 0 48px;
+    }
+
+    .mid__content-data-info {
+        text-align: center;
+        font-size: 1.4rem;
+        color: var(--white-color);
+    }
+
+    .mid__content-data-progress {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .progress-container-red {
+        position: relative;
+    }
+
+    .progress-bar-red {
+        position: relative;
+        background: #3A3A3A;
+        height: 0.3rem;
+        z-index: 0;
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+
+    .progress-bar-red::after {
+        content: '';
+        width: var(--width);
+        height: inherit;
+        background: #E20E0E;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: -1;
+    }
+
+    .percent-text-red {
+        position: relative;
+        top: -0.6rem;
+        font-size: 1.4rem;
+        color: var(--white-color);
+    }
+
+    .progress-container-blue {
+        position: relative;
+    }
+
+    .progress-bar-blue {
+        position: relative;
+        background: #3A3A3A;
+        height: 0.3rem;
+        z-index: 0;
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+
+    .progress-bar-blue::after {
+        content: '';
+        width: var(--width);
+        height: inherit;
+        background: #006AA9;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+
+    .percent-text-blue {
+        position: relative;
+        top: -0.6rem;
+        right: 2rem; 
+        transform: translateX(100%); 
+        color: var(--white-color);
+        font-size: 1.4rem;
+    }
+    
+
+    .livestream {
+        margin-bottom: 12px;
+        padding: 12px;
+        background-color: #1B1C21;
+        border-radius: 12px;
+    }
+
+    .livestream-comment {
+        font-size: 1.2rem;
+        color: var(--white-color);
+        line-height: 3rem;
+    }
+
+    input {
+        width: 200px;
+        height: 30px;
+        border: none;
+        border-radius: 5px;
+    }
+
+    .ads {
+        background-color: #1B1C21;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 12px;
+    }
+
+    @media screen and (max-width: 1023px) {
+        .mobile-category {
+            display: block;
+        }
+
+        .subpage__index {
+            font-size: 1.3rem;
+        }
+
+        .mid__content-grid {
+            background-color: #212227;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .hide-on-mobile {
+            display: none;
+        }
+
+        .content {
+            font-size: 1.3rem;
+        }
+
+        .grid-item:nth-child(7),
+        .grid-item:nth-child(8),
+        .grid-item:nth-child(9) {
+            grid-column: 1 / -1;
+        }
+
+        .subpage__match-item {
+            font-size: 1.3rem;
+        }
+
+        .subpage__match-info-name {
+            font-size: 0.8rem;
+        }
+
+        .mid__content-list {
+            margin: 12px 0;
+        }
+
+        .mid__content-link {
+            font-size: 1.3rem;
+        }
+
+        .news__topic-info-heading {
+            font-size: 2rem;
+        }
+
+        .news__topic-info-img {
+            width: 336px;
+            height: 260px;
+        }
+    }
+</style>
+
+<body>
+    <div class="web">
+        <header class="header">
+            <div id="toggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            <div class="box__navbar">
+                <nav class="header__navbar">
+                    <ul class="header__navbar-list-left">
+                        <li class="header__navbar-item">
+                            <img src="./img/Fifa logo.png" alt="" class="header__navbar-img" />
+                        </li>
+                    </ul>
+                    <ul class="header__navbar-list">
+                        <li class="header__navbar-list">
+                            <a href="" class="header__navbar-link">TRANG CHỦ</a>
+                        </li>
+                        <li class="header__navbar-list">
+                            <a href="" class="header__navbar-link">NHẬN ĐỊNH TỶ LỆ</a>
+                        </li>
+                        <li class="header__navbar-list">
+                            <a href="" class="header__navbar-link">TIN TỨC</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <div class="app__container">
+            <div class="grid wide">
+                <div class="row sm-gutter app__content">
+                    <div class="col l-9 m-12 c-12">
+                        <!-- MOBILE CATEGORY -->
+                        <nav class="mobile-category">
+                            <ul class="mobile-category__list">
+                                <li class="mobile-category__item">
+                                    <a href="" class="mobile-category__link mobile-category__link--active">Các trận
+                                        đấu</a>
+                                </li>
+                                <li class="mobile-category__item">
+                                    <a href="" class="mobile-category__link">Lịch thi đấu</a>
+                                </li>
+                                <li class="mobile-category__item">
+                                    <a href="" class="mobile-category__link">Bảng xếp hạng</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div class="subpage__index">Các trận đấu sắp diễn ra > World Cup</div>
+                        <div class="mid__content-grid">
+                            <div class="subpage__match-video">
+                                <iframe width="560" height="315"
+                                    src="https://www.youtube.com/embed/o1igaMv46SY?si=f0B3pMunok25b74B"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                            </div>
+
+                            <div class="subpage__grid-container">
+                                <div class="grid-item empty hide-on-mobile"></div>
+                                <div class="grid-item content hide-on-mobile">26/09/2023 23:55</div>
+                                <div class="grid-item empty hide-on-mobile"></div>
+                                <div class="grid-item empty hide-on-mobile"></div>
+                                <div class="grid-item content hide-on-mobile">World Cup</div>
+                                <div class="grid-item empty hide-on-mobile"></div>
+                                <div class="grid-item content ">Sân: Lusail Stadium</div>
+                                <div class="grid-item content hide-on-mobile">Vòng 5</div>
+                                <div class="grid-item content">Trọng tài: Pierluigi Collina</div>
+                                <div class="grid-item content subpage__match">
+                                    <div class="subpage__match-item">Argentina</div>
+                                    <div class="subpage__match-pic">
+                                        <img src="./img/argentina_flag.png" alt="" class="subpage__match-img">
+                                    </div>
+                                </div>
+                                <div class="grid-item content subpage__match-item">0 - 0</div>
+                                <div class="grid-item content subpage__match">
+                                    <div class="subpage__match-pic">
+                                        <img src="./img/italy_flag.png" alt="" class="subpage__match-img">
+                                    </div>
+                                    <div class="subpage__match-item">Italy</div>
+                                </div>
+                                <div class="grid-item content subpage__match-info">
+                                    <div class="subpage__match-info-name">C. Ronaldo 15’</div>
+                                    <div class="subpage__match-info-name">C. Ronaldo 15’</div>
+                                    <div class="subpage__match-info-name">C. Ronaldo 65’</div>
+                                    <div class="subpage__match-info-name">C. Ronaldo 65’</div>
+                                </div>
+                                <div class="grid-item empty"></div>
+                                <div class="grid-item content subpage__match-info">
+                                    <div class="subpage__match-info-name">R. Lukaku 42’</div>
+                                    <div class="subpage__match-info-name">R. Lukaku 42’</div>
+                                    <div class="subpage__match-info-name">E. Hazard 58’</div>
+                                    <div class="subpage__match-info-name">E. Hazard 58’</div>
+                                    <div class="subpage__match-info-name">E. Hazard 90 ’+3</div>
+                                    <div class="subpage__match-info-name">E. Hazard 90 ’+3</div>
+                                    <div class="subpage__match-info-name">E. Hazard 90 ’+3</div>
+                                    <div class="subpage__match-info-name">E. Hazard 90 ’+3</div>
+                                </div>
+                            </div>
+                            <ul class="mid__content-list">
+                                <li class="mid__content-item">
+                                    <a href="" class="mid__content-link">Tóm tắt</a>
+                                </li>
+                                <li class="mid__content-item">
+                                    <a href="" class="mid__content-link ">Dự đoán</a>
+                                </li>
+                                <li class="mid__content-item mid__content-item--active">
+                                    <a href="" class="mid__content-link">Số liệu</a>
+                                </li>
+                                <li class="mid__content-item">
+                                    <a href="" class="mid__content-link">Đội hình</a>
+                                </li>
+                            </ul>
+                            <div class="mid__content-data">
+                                <div class="mid__content-data-info">Kiểm soát bóng</div>
+                                <div class="mid__content-data-progress">
+                                    <div class="progress-container-red">
+                                        <div class="percent-text-red">62%</div>
+                                        <div class="progress-bar-red" style="--width: 62%"></div>
+                                    </div>
+                                    <div class="progress-container-blue">
+                                        <div class="percent-text-blue">38%</div>
+                                        <div class="progress-bar-blue" style="--width: 38%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mid__content-data">
+                                <div class="mid__content-data-info">Số lần dứt điểm</div>
+                                <div class="mid__content-data-progress">
+                                    <div class="progress-container-red">
+                                        <div class="percent-text-red">16</div>
+                                        <div class="progress-bar-red" style="--width: 62%"></div>
+                                    </div>
+                                    <div class="progress-container-blue">
+                                        <div class="percent-text-blue">7</div>
+                                        <div class="progress-bar-blue" style="--width: 38%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mid__content-data">
+                                <div class="mid__content-data-info">Sút trúng đích</div>
+                                <div class="mid__content-data-progress">
+                                    <div class="progress-container-red">
+                                        <div class="percent-text-red">5</div>
+                                        <div class="progress-bar-red" style="--width: 62%"></div>
+                                    </div>
+                                    <div class="progress-container-blue">
+                                        <div class="percent-text-blue">7</div>
+                                        <div class="progress-bar-blue" style="--width: 38%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mid__content-data">
+                                <div class="mid__content-data-info">Dứt điểm ra ngoài</div>
+                                <div class="mid__content-data-progress">
+                                    <div class="progress-container-red">
+                                        <div class="percent-text-red">11</div>
+                                        <div class="progress-bar-red" style="--width: 62%"></div>
+                                    </div>
+                                    <div class="progress-container-blue">
+                                        <div class="percent-text-blue">0</div>
+                                        <div class="progress-bar-blue" style="--width: 38%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mid__content-data">
+                                <div class="mid__content-data-info">Đá phạt</div>
+                                <div class="mid__content-data-progress">
+                                    <div class="progress-container-red">
+                                        <div class="percent-text-red">7</div>
+                                        <div class="progress-bar-red" style="--width: 62%"></div>
+                                    </div>
+                                    <div class="progress-container-blue">
+                                        <div class="percent-text-blue">12</div>
+                                        <div class="progress-bar-blue" style="--width: 38%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mid__content-data">
+                                <div class="mid__content-data-info">Phạt góc</div>
+                                <div class="mid__content-data-progress">
+                                    <div class="progress-container-red">
+                                        <div class="percent-text-red">9</div>
+                                        <div class="progress-bar-red" style="--width: 62%"></div>
+                                    </div>
+                                    <div class="progress-container-blue">
+                                        <div class="percent-text-blue">1</div>
+                                        <div class="progress-bar-blue" style="--width: 38%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mid__content-data">
+                                <div class="mid__content-data-info">Việt vị</div>
+                                <div class="mid__content-data-progress">
+                                    <div class="progress-container-red">
+                                        <div class="percent-text-red">2</div>
+                                        <div class="progress-bar-red" style="--width: 62%"></div>
+                                    </div>
+                                    <div class="progress-container-blue">
+                                        <div class="percent-text-blue">2</div>
+                                        <div class="progress-bar-blue" style="--width: 38%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mid__content-data">
+                                <div class="mid__content-data-info">Thủ môn cứu thua</div>
+                                <div class="mid__content-data-progress">
+                                    <div class="progress-container-red">
+                                        <div class="percent-text-red">6</div>
+                                        <div class="progress-bar-red" style="--width: 62%"></div>
+                                    </div>
+                                    <div class="progress-container-blue">
+                                        <div class="percent-text-blue">3</div>
+                                        <div class="progress-bar-blue" style="--width: 38%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mid__content-data">
+                                <div class="mid__content-data-info">Phạm lỗi</div>
+                                <div class="mid__content-data-progress">
+                                    <div class="progress-container-red">
+                                        <div class="percent-text-red">4</div>
+                                        <div class="progress-bar-red" style="--width: 62%"></div>
+                                    </div>
+                                    <div class="progress-container-blue">
+                                        <div class="percent-text-blue">4</div>
+                                        <div class="progress-bar-blue" style="--width: 38%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mid__content-data">
+                                <div class="mid__content-data-info">Thẻ vàng</div>
+                                <div class="mid__content-data-progress">
+                                    <div class="progress-container-red">
+                                        <div class="percent-text-red">0</div>
+                                        <div class="progress-bar-red" style="--width: 62%"></div>
+                                    </div>
+                                    <div class="progress-container-blue">
+                                        <div class="percent-text-blue">1</div>
+                                        <div class="progress-bar-blue" style="--width: 38%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mid__content-data">
+                                <div class="mid__content-data-info">Thẻ đỏ</div>
+                                <div class="mid__content-data-progress">
+                                    <div class="progress-container-red">
+                                        <div class="percent-text-red">0</div>
+                                        <div class="progress-bar-red" style="--width: 62%"></div>
+                                    </div>
+                                    <div class="progress-container-blue">
+                                        <div class="percent-text-blue">1</div>
+                                        <div class="progress-bar-blue" style="--width: 38%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col l-3 m-0 c-0">
+                        <div class="livestream">
+                            <div class="livestream-comment">Cat: Bắt đầu</div>
+                            <div class="livestream-comment">DoctorDocker: Vàoooooooooooo</div>
+                            <div class="livestream-comment">CGGuy: Kèo này ngon</div>
+                            <div class="livestream-comment">Meow34: Oh</div>
+                            <div class="livestream-comment">Cat: Bắt đầu</div>
+                            <div class="livestream-comment">DoctorDocker: Vàoooooooooooo</div>
+                            <div class="livestream-comment">CGGuy: Kèo này ngon</div>
+                            <div class="livestream-comment">Meow34: Oh</div>
+                            <input type="text" name="" id="" placeholder="Send a message">
+                        </div>
+                        <div class="ads">
+                            <p class="ads__title">Quảng cáo</p>
+                            <img src="./img/ads banner.jpg" alt="" class="ads__banner" />
+                            <img src="./img/ads banner.jpg" alt="" class="ads__banner" />
+                            <img src="./img/ads banner.jpg" alt="" class="ads__banner" />
+                            <img src="./img/ads banner.jpg" alt="" class="ads__banner" />
+                            <img src="./img/ads banner.jpg" alt="" class="ads__banner" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="grid wide">
+                <div class="row footer__content">
+                    <div class="col l-3 m-12 c-12">
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Điều khoản sử dụng</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Thông báo pháp lý</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Quyền riêng tư</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">© 1997-2023 ABC, Inc.</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col l-3 m-12 c-12">
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Trang chủ</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Nhận định tỷ lệ</a>
+                            </li>
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Tin tức</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col l-3 m-12 c-12">
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">Liên hệ đặt quảng cáo</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col l-3 m-12 c-12">
+                        <ul class="footer-list">
+                            <li class="footer-item">
+                                <a href="" class="footer-item__link">
+                                    <i class="footer-item__icon fa-brands fa-facebook"></i>
+                                    Facebook
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script>
+            $(document).ready(function () {
+                $("#toggle").click(function () {
+                    if (window.innerWidth < 1024) {
+                        $(".box__navbar").toggleClass("active");
+                    }
+                });
+            });
+        </script>
+    </div>
+</body>
+
+</html>

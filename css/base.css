@@ -1,0 +1,20 @@
+:root {
+    --white-color: #FFFFFF;
+    --red-color: #E20E0E;
+    --yellow-color: #F5C451;
+    --black-color: #1B1C21;
+    --gray-color: #A4A4A4;
+    --green-color: #009246;
+    --header-height: 102px;
+}
+
+* {
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%;
+    line-height: 1.6rem;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+}

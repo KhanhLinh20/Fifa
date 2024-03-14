@@ -1,0 +1,234 @@
+@media (min-width: 1024px) {
+  .header {
+    height: 102px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+
+  .header__navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--black-color);
+    padding: 0 106px;
+    margin: 0;
+  }
+
+  .header__navbar-list {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+
+  .header__navbar-item {
+    position: relative;
+    min-height: 26px;
+  }
+
+  .header__navbar-link {
+    color: var(--white-color);
+    font-weight: 600;
+    font-size: 1.2rem;
+    line-height: var(--header-height);
+    text-decoration: none;
+    margin: 0 16px;
+  }
+
+  .header__navbar-img {
+    width: 80px;
+    height: 96.6px;
+    display: inline-block;
+  }
+
+  #toggle {
+    display: none;
+    background: var(--black-color);
+    color: var(--white-color);
+    text-align: right;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    height: 40px;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .header__navbar-list {
+    flex-direction: column;
+    text-align: center;
+    margin: auto;
+    /* Để căn giữa khối header__navbar */
+  }
+
+  .header__navbar-list-left {
+    display: none;
+  }
+
+  .app__container {
+    margin-top: 20px;
+  }
+
+  .box__navbar {
+    display: none;
+  }
+
+  #toggle {
+    display: block;
+  }
+
+  .box__navbar.active {
+    display: block;
+  }
+
+  .app__content {
+    margin: 0 4px;
+  }
+
+  .app__container {
+    margin-top: 40px;
+  }
+
+  .mobile-category {
+    display: block;
+  }
+
+  .mid__content-header-heading {
+    font-size: 1.5rem;
+  }
+
+  .mid__content-item {
+    margin: 0 12px;
+  }
+
+  .mid__content-link {
+    font-size: 1.2rem;
+  }
+
+  .mid__content-match {
+    align-items: center;
+  }
+
+  .mid__content-match-team,
+  .mid__content-match-score {
+    line-height: 1.5rem;
+  }
+
+  .mid__content-match-flag {
+    width: 15px;
+    height: 15px;
+  }
+
+  .mid__content-info {
+    grid-template-columns: auto 1fr;
+    /* Ở chế độ responsive, chỉ có một cột */
+    grid-template-areas:
+      "icon timeline";
+    /* Đảo thứ tự các khối */
+    text-align: center;
+  }
+
+  .mid__content-info-timeline {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-area: timeline;
+    row-gap: 0;
+  }
+
+  .mid__content-info-time {
+    display: flex;
+    align-items: center;
+    /* Để căn giữa theo chiều dọc */
+    justify-content: center;
+    /* Để căn giữa theo chiều ngang */
+  }
+
+  .mid__content-info-time-text {
+    width: 43px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mid__content-info-fulltime {
+    font-size: 0.6rem;
+  }
+
+  .mid__content-info-date {
+    margin-top: -5px;
+  }
+
+  .mid__content-info-icon {
+    grid-area: icon;
+    display: flex;
+    /* Sử dụng flexbox để căn giữa dọc */
+    flex-direction: column;
+    /* Xếp chồng văn bản theo cột */
+    align-items: center;
+    /* Để căn giữa theo chiều ngang */
+    justify-content: center;
+    /* Để căn giữa theo chiều dọc */
+    text-align: center;
+    /* Để căn giữa theo chiều ngang trong từng dòng */
+    height: 100%;
+    /* Đảm bảo khối icon có chiều cao 100% của div cha */
+  }
+
+  .mid__content-info-icon i {
+    line-height: 1.5rem;
+    /* Điều chỉnh line-height để văn bản nằm chính giữa của dòng thứ hai */
+  }
+
+  .mid__content-news {
+    flex-wrap: nowrap;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .mid__content-news::-webkit-scrollbar {
+    display: none;
+    /* tạo lớp giả ẩn thanh scroll bar */
+  }
+
+  .news-item__banner {
+    width: 164px;
+    height: 159px;
+  }
+
+  .table__content-heading {
+    gap: 32px;
+    margin-top: 10px; 
+  }
+
+  .table__content-container {
+    gap: 40px;
+  }
+
+  .table__content-club-flag {
+    width: 15px;
+    height: 15px;
+  }
+
+  .table__content-result,
+  .table__content-club-number,
+  .table__content-club-name,
+  .table__content-result {
+    font-size: 1.3rem;
+    line-height: 1.5rem;
+  }
+
+  .footer__content {
+    flex-direction: column-reverse;
+  }
+
+  .footer-item__link {
+    display: block;
+    text-align: center;
+  }
+}
